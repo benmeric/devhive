@@ -22,71 +22,20 @@ st.set_page_config(
 # CSS Stilleri
 st.markdown("""
 <style>
-/* Uygulama arka plan ve yazı rengi */
 body, [data-testid="stAppViewContainer"] {
     background-color: #0a0a0a;
     color: white;
 }
-/* Chat mesajları */
-[data-testid="stChatMessage"].user {
-    background-color: #1a1a1a !important;
-    color: #ffffff !important;
-    margin-left: auto;
-    border: 1px solid #333333 !important;
-    padding: 12px 16px;
-    border-radius: 8px;
+.sidebar-footer {
+    position: absolute;
+    bottom: 20px;
+    font-size: 13px;
+    color: #aaa;
 }
-[data-testid="stChatMessage"].assistant {
-    background-color: #1e1e1e !important;
-    color: #ffffff !important;
-    margin-right: auto;
-    border: 1px solid #333333 !important;
-    padding: 12px 16px;
-    border-radius: 8px;
+.sidebar-footer a {
+    color: #1f77b4;
+    text-decoration: none;
 }
-/* Butonlar */
-.stButton>button {
-    background-color: #2a2a2a !important;
-    color: white !important;
-    border: 1px solid #444444 !important;
-    border-radius: 8px !important;
-}
-.stButton>button:hover {
-    background-color: #333333 !important;
-}
-/* Download butonu */
-.stDownloadButton>button {
-    background-color: #1a1a1a !important;
-    color: #ffffff !important;
-    border: 1px solid #444444 !important;
-}
-/* Sidebar */
-[data-testid="stSidebar"] {
-    background: #121212 !important;
-    border-right: 1px solid #333333 !important;
-}
-/* Scrollbar */
-::-webkit-scrollbar {
-    width: 8px;
-}
-::-webkit-scrollbar-thumb {
-    background: #333333;
-    border-radius: 4px;
-}
-/* Footer sola sabit */
-.footer {
-    text-align: left;
-    padding: 16px;
-    color: #aaaaaa !important;
-    font-size: 14px;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    background: #0a0a0a !important;
-    border-top: 1px solid #333333 !important;
-    width: 100%;
-}
-#MainMenu, footer {visibility: hidden;}
 </style>
 """, unsafe_allow_html=True)
 
@@ -99,19 +48,23 @@ with st.sidebar:
     st.header(" </> ")
     st.markdown("### Kullanım Kılavuzu")
     st.markdown("Sadece programlama ve kodlama ile ilgili sorular sorun.")
-    st.markdown('<div class="sidebar-footer">', unsafe_allow_html=True)
-    st.markdown("**Geliştirici:** Meriç Yüzaklı")
-    st.markdown("**📸 İnstagram:** [benmericig](https://www.instagram.com/benmericig/)")
-    st.markdown("**▶️ Youtube:** [benmericyt](https://www.youtube.com/benmericyt)")
-    st.markdown("**📧 İletişim:** benmericinfo@gmail.com")
-    st.markdown("**🔄 Versiyon:** 1.0.0")
-    st.markdown("</div>", unsafe_allow_html=True)
+    
+    # Footer (sidebar en alt)
+    st.markdown("""
+    <div class="sidebar-footer">
+        <strong>Geliştirici:</strong> Meriç Yüzaklı<br>
+        📸 <a href="https://www.instagram.com/benmericig/" target="_blank">Instagram</a><br>
+        ▶️ <a href="https://www.youtube.com/benmericyt" target="_blank">YouTube</a><br>
+        📧 benmericinfo@gmail.com<br>
+        🔄 Versiyon: 1.0.0
+    </div>
+    """, unsafe_allow_html=True)
 
 # Sohbet Geçmişi
 if "messages" not in st.session_state:
     st.session_state.messages = [{"role": "assistant", "content": "Merhaba! Programlama ile ilgili nasıl yardımcı olabilirim? 😊"}]
 
-# Mesajları göster
+# Mesajları Göster
 for message in st.session_state.messages:
     with st.chat_message(message["role"], avatar="🤖" if message["role"] == "assistant" else "👤"):
         st.markdown(message["content"], unsafe_allow_html=True)
@@ -142,7 +95,6 @@ if prompt := st.chat_input("Mesajınızı yazın..."):
     with st.chat_message("user", avatar="👤"):
         st.markdown(prompt, unsafe_allow_html=True)
 
-    # Prompt'u oluştur
     previous_chat = "\n".join([f"{m['role']}: {m['content']}" for m in st.session_state.messages])
     final_prompt = f"""You are a programming teaching assistant named DevHive (Developer Hive), created by Meriç Yüzaklı.
 Answer only programming and code-related questions.
@@ -151,7 +103,6 @@ previous_chat:
 Human: {prompt}
 Chatbot:"""
 
-    # Gemini yanıtı al
     with st.chat_message("assistant", avatar="🤖"):
         with st.spinner("🤖 Cevap oluşturuluyor..."):
             response = model.generate_content(
@@ -164,10 +115,3 @@ Chatbot:"""
             st.markdown(response.text, unsafe_allow_html=True)
 
     st.session_state.messages.append({"role": "assistant", "content": response.text})
-
-# Footer - SOL ALTA SABİTLENMİŞ
-st.markdown("""
-<div class="footer">
-    <div>© 2025 DevHive - Tüm hakları saklıdır</div>
-</div>
-""", unsafe_allow_html=True)
