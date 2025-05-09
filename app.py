@@ -202,20 +202,20 @@ if prompt := st.chat_input("Mesajınızı yazın..."):
     {previous_chat}
     Human: {prompt}
     Chatbot:"""
+    
+with st.chat_message("assistant", avatar="🤖"):
+    with st.spinner("🤖 Cevap oluşturuluyor..."):
+        response = model.generate_content(
+            final_prompt,
+            generation_config=genai.types.GenerationConfig(
+                max_output_tokens=4096,
+                temperature=0.7
+            )
+        )
+        st.markdown(response.text, unsafe_allow_html=True)
 
-    with st.chat_message("assistant", avatar="🤖"):
-        with st.spinner("?? Cevap olu?turuluyor..."):
-            response = model.generate_coresponse = model.generate_content(
-    final_prompt,
-    generation_config=genai.types.GenerationConfig(
-        max_output_tokens=4096,
-        temperature=0.7
-    )
-)
-ntent(final_prompt)
-            st.markdown(response.text, unsafe_allow_html=True)
-        
-    st.session_state.messages.append({"role": "assistant", "content": response.text})
+st.session_state.messages.append({"role": "assistant", "content": response.text})
+
 
 # Footer
 st.markdown("""
