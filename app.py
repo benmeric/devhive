@@ -54,8 +54,8 @@ language = st.session_state.language
 lang = languages[language]
 
 # Sidebar - Dar bayrak butonları
-with st.sidebar(" </> ")
-    st.header
+with st.sidebar:
+    st.header("Developer Hive </> ")
     st.markdown('<div class="sidebar-container">', unsafe_allow_html=True)
 
     # Daha dar kolonlar: 0.48 oranı, arada küçük boşluk kalır
