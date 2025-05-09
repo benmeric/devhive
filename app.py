@@ -165,7 +165,7 @@ if "messages" not in st.session_state:
 
 # Mesajları göster
 for message in st.session_state.messages:
-    with st.chat_message(message["role"], avatar="??" if message["role"] == "assistant" else "?��"):
+    with st.chat_message(message["role"], avatar="🤖" if message["role"] == "assistant" else "👤"):
         st.markdown(message["content"], unsafe_allow_html=True)
 
 # Action Butonları
@@ -191,7 +191,7 @@ with col2:
 if prompt := st.chat_input("Mesajınızı yazın..."):
     st.session_state.messages.append({"role": "user", "content": prompt})
     
-    with st.chat_message("user", avatar="?��"):
+    with st.chat_message("user", avatar="👤"):
         st.markdown(prompt, unsafe_allow_html=True)
 
     # Prompt'u Güncelleme
