@@ -15,15 +15,66 @@ st.set_page_config(
     menu_items={}
 )
 
-# CSS Stilleri
+# Dil Ayarları
+languages = {
+    "Türkçe": {
+        "title": "DevHive",
+        "caption": "Profesyonel Programlama Asistanı",
+        "guide_header": "Kullanım Kılavuzu",
+        "guide_text": "Sadece programlama ve kodlama ile ilgili sorular sorun.",
+        "new_chat": "🔄 Yeni Sohbet",
+        "download_chat": "📥 Sohbeti İndir",
+        "input_placeholder": "Mesajınızı yazın...",
+        "download_help": "Sohbet geçmişini txt olarak indir",
+        "initial_message": "Merhaba! Programlama ile ilgili nasıl yardımcı olabilirim? 😊",
+        "generating": "🤖 Cevap oluşturuluyor...",
+        "version": "Versiyon",
+        "developer": "Geliştirici"
+    },
+    "English": {
+        "title": "DevHive",
+        "caption": "Professional Programming Assistant",
+        "guide_header": "User Guide",
+        "guide_text": "Only ask programming and coding related questions.",
+        "new_chat": "🔄 New Chat",
+        "download_chat": "📥 Download Chat",
+        "input_placeholder": "Type your message...",
+        "download_help": "Download chat history as a .txt file",
+        "initial_message": "Hi there! How can I assist you with programming? 😊",
+        "generating": "🤖 Generating response...",
+        "version": "Version",
+        "developer": "Developer"
+    }
+}
+
+# Sidebar
+with st.sidebar:
+    language = st.selectbox("🌐 Dil / Language", options=list(languages.keys()))
+    lang = languages[language]
+
+    st.markdown('<div class="sidebar-container">', unsafe_allow_html=True)
+    st.header(" </> ")
+    st.markdown(f"### {lang['guide_header']}")
+    st.markdown(lang['guide_text'])
+
+    st.markdown(f"""
+    <div class="sidebar-footer">
+        <strong>{lang['developer']}:</strong> Meriç Yüzaklı<br>
+        📸 <a href="https://www.instagram.com/benmericig/" target="_blank">Instagram</a><br>
+        ▶️ <a href="https://www.youtube.com/benmericyt" target="_blank">YouTube</a><br>
+        📧 benmericinfo@gmail.com<br>
+        🔄 {lang['version']}: 1.0.0
+    </div>
+    """, unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# CSS
 st.markdown("""
 <style>
 body, [data-testid="stAppViewContainer"] {
     background-color: #0a0a0a;
     color: white;
 }
-
-/* Sidebar footer sabitleme */
 .sidebar-container {
     display: flex;
     flex-direction: column;
@@ -43,75 +94,66 @@ body, [data-testid="stAppViewContainer"] {
 </style>
 """, unsafe_allow_html=True)
 
-# Başlık
-st.title("DevHive")
-st.caption("Profesyonel Programlama Asistanı")
-
-# Sidebar
-with st.sidebar:
-    st.markdown('<div class="sidebar-container">', unsafe_allow_html=True)
-
-    st.header(" </> ")
-    st.markdown("### Kullanım Kılavuzu")
-    st.markdown("Sadece programlama ve kodlama ile ilgili sorular sorun.")
-
-    # Footer
-    st.markdown("""
-    <div class="sidebar-footer">
-        <strong>Geliştirici:</strong> Meriç Yüzaklı<br>
-        📸 <a href="https://www.instagram.com/benmericig/" target="_blank">Instagram</a><br>
-        ▶️ <a href="https://www.youtube.com/benmericyt" target="_blank">YouTube</a><br>
-        📧 benmericinfo@gmail.com<br>
-        🔄 Versiyon: 1.0.0
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown('</div>', unsafe_allow_html=True)
+# Başlık ve Açıklama
+st.title(lang["title"])
+st.caption(lang["caption"])
 
 # Sohbet Geçmişi
 if "messages" not in st.session_state:
-    st.session_state.messages = [{"role": "assistant", "content": "Merhaba! Programlama ile ilgili nasıl yardımcı olabilirim? 😊"}]
+    st.session_state.messages = [{"role": "assistant", "content": lang["initial_message"]}]
 
 # Mesajları Göster
 for message in st.session_state.messages:
     with st.chat_message(message["role"], avatar="🤖" if message["role"] == "assistant" else "👤"):
         st.markdown(message["content"], unsafe_allow_html=True)
 
-# Action Butonları
+# Butonlar
 col1, col2 = st.columns(2)
 with col1:
-    if st.button("🔄 Yeni Sohbet", use_container_width=True):
+    if st.button(lang["new_chat"], use_container_width=True):
         st.session_state.clear()
-        st.session_state.messages = [{"role": "assistant", "content": "Merhaba! Programlama ile ilgili nasıl yardımcı olabilirim? 😊"}]
+        st.session_state.messages = [{"role": "assistant", "content": lang["initial_message"]}]
         st.rerun()
 
 with col2:
     if len(st.session_state.messages) > 1:
         chat_content = "\n\n".join([f"{m['role']}: {m['content']}" for m in st.session_state.messages])
         st.download_button(
-            "📥 Sohbeti İndir",
-            chat_content,
-            file_name=f"devhive_sohbet_{datetime.now().strftime('%Y%m%d_%H%M')}.txt",
+            label=lang["download_chat"],
+            data=chat_content,
+            file_name=f"devhive_chat_{datetime.now().strftime('%Y%m%d_%H%M')}.txt",
+            help=lang["download_help"],
             use_container_width=True
         )
 
-# Kullanıcı Girişi
-if prompt := st.chat_input("Mesajınızı yazın..."):
+# Kullanıcı Mesajı
+if prompt := st.chat_input(lang["input_placeholder"]):
     st.session_state.messages.append({"role": "user", "content": prompt})
     
     with st.chat_message("user", avatar="👤"):
         st.markdown(prompt, unsafe_allow_html=True)
 
+    # Prompt Hazırlama
     previous_chat = "\n".join([f"{m['role']}: {m['content']}" for m in st.session_state.messages])
-    final_prompt = f"""You are a programming teaching assistant named DevHive (Developer Hive), created by Meriç Yüzaklı.
-Answer only programming and code-related questions.
+    
+    if language == "English":
+        final_prompt = f"""You are a programming teaching assistant named DevHive (Developer Hive), created by Meriç Yüzaklı.
+Only answer programming and code-related questions.
 previous_chat:
 {previous_chat}
 Human: {prompt}
 Chatbot:"""
+    else:
+        final_prompt = f"""Sen Meriç Yüzaklı tarafından geliştirilmiş bir programlama öğretmenisin. Adın DevHive (Developer Hive).
+Sadece programlama ve kodlama ile ilgili sorulara cevap ver.
+Önceki sohbet:
+{previous_chat}
+İnsan: {prompt}
+Asistan:"""
 
+    # Gemini Cevabı
     with st.chat_message("assistant", avatar="🤖"):
-        with st.spinner("🤖 Cevap oluşturuluyor..."):
+        with st.spinner(lang["generating"]):
             response = model.generate_content(
                 final_prompt,
                 generation_config=GenerationConfig(
