@@ -53,17 +53,18 @@ if "language" not in st.session_state:
 language = st.session_state.language
 lang = languages[language]
 
-# Sidebar
+# Sidebar - Dar bayrak butonları
 with st.sidebar:
     st.markdown('<div class="sidebar-container">', unsafe_allow_html=True)
 
-    col1, col2 = st.columns([0.5])
+    # Daha dar kolonlar: 0.48 oranı, arada küçük boşluk kalır
+    col1, col2 = st.columns([0.48, 0.48])
     with col1:
-        if st.button("🇹🇷 Türkçe"):
+        if st.button("🇹🇷", use_container_width=True):
             st.session_state.language = "Türkçe"
             st.rerun()
     with col2:
-        if st.button("🇺🇸 English"):
+        if st.button("🇺🇸", use_container_width=True):
             st.session_state.language = "English"
             st.rerun()
 
