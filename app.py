@@ -55,8 +55,9 @@ lang = languages[language]
 
 # Sidebar - Dar bayrak butonları
 with st.sidebar:
+    st.header(" </> ")
     st.markdown('<div class="sidebar-container">', unsafe_allow_html=True)
-st.header(" </> ")
+
     # Daha dar kolonlar: 0.48 oranı, arada küçük boşluk kalır
     col1, col2 = st.columns([0.48, 0.48])
     with col1:
