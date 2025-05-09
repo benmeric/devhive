@@ -203,7 +203,7 @@ if prompt := st.chat_input("Mesajınızı yazın..."):
     Human: {prompt}
     Chatbot:"""
 
-    with st.chat_message("assistant", avatar="??"):
+    with st.chat_message("assistant", avatar="🤖"):
         with st.spinner("?? Cevap olu?turuluyor..."):
             response = model.generate_content(final_prompt)
             st.markdown(response.text, unsafe_allow_html=True)
