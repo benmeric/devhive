@@ -10,7 +10,7 @@ model = genai.GenerativeModel('gemini-1.5-flash-latest')
 # Sayfa Ayarları
 st.set_page_config(
     page_title="DevHive - Programlama Asistanı",
-    page_icon="🤖",
+    page_icon="</>",
     layout="centered",
     menu_items={}
 )
