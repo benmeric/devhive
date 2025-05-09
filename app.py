@@ -152,9 +152,9 @@ with st.sidebar:
     # Sidebar footer (en alta yerle?tirildi)
     with st.container():
         st.markdown('<div class="sidebar-footer">', unsafe_allow_html=True)
-        st.markdown("**?��?��??Geli?tirici:** Meriç Yüzaklı")  
+        st.markdown("**Geliştirici:** Meriç Yüzaklı")  
         st.markdown("**?�� İnstagram:** [benmericig](https://www.instagram.com/benmericig/)")
-        st.markdown("**?��? Youtube:** [benmericyt](https://www.youtube.com/benmericyt)")
+        st.markdown("**?�Youtube:** [benmericyt](https://www.youtube.com/benmericyt)")
         st.markdown("**?�� İleti?im:** benmericinfo@gmail.com")
         st.markdown("**?? Versiyon:** 1.0.0")
         st.markdown("</div>", unsafe_allow_html=True)
@@ -205,7 +205,14 @@ if prompt := st.chat_input("Mesajınızı yazın..."):
 
     with st.chat_message("assistant", avatar="🤖"):
         with st.spinner("?? Cevap olu?turuluyor..."):
-            response = model.generate_content(final_prompt)
+            response = model.generate_coresponse = model.generate_content(
+    final_prompt,
+    generation_config=genai.types.GenerationConfig(
+        max_output_tokens=4096,
+        temperature=0.7
+    )
+)
+ntent(final_prompt)
             st.markdown(response.text, unsafe_allow_html=True)
         
     st.session_state.messages.append({"role": "assistant", "content": response.text})
