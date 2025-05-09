@@ -12,11 +12,7 @@ st.set_page_config(
     page_title="DevHive - Programlama Asistanı",
     page_icon="🤖",
     layout="centered",
-    menu_items={
-        'Get Help': None,
-        'Report a bug': None,
-        'About': None
-    }
+    menu_items={}
 )
 
 # CSS Stilleri
@@ -26,11 +22,19 @@ body, [data-testid="stAppViewContainer"] {
     background-color: #0a0a0a;
     color: white;
 }
+
+/* Sidebar footer sabitleme */
+.sidebar-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
 .sidebar-footer {
-    position: absolute;
-    bottom: 20px;
+    margin-top: auto;
     font-size: 13px;
     color: #aaa;
+    padding-top: 10px;
+    border-top: 1px solid #333;
 }
 .sidebar-footer a {
     color: #1f77b4;
@@ -45,11 +49,13 @@ st.caption("Profesyonel Programlama Asistanı")
 
 # Sidebar
 with st.sidebar:
+    st.markdown('<div class="sidebar-container">', unsafe_allow_html=True)
+
     st.header(" </> ")
     st.markdown("### Kullanım Kılavuzu")
     st.markdown("Sadece programlama ve kodlama ile ilgili sorular sorun.")
-    
-    # Footer (sidebar en alt)
+
+    # Footer
     st.markdown("""
     <div class="sidebar-footer">
         <strong>Geliştirici:</strong> Meriç Yüzaklı<br>
@@ -59,6 +65,8 @@ with st.sidebar:
         🔄 Versiyon: 1.0.0
     </div>
     """, unsafe_allow_html=True)
+
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # Sohbet Geçmişi
 if "messages" not in st.session_state:
@@ -72,7 +80,7 @@ for message in st.session_state.messages:
 # Action Butonları
 col1, col2 = st.columns(2)
 with col1:
-    if st.button("🔄 Yeni Sohbet", use_container_width=True, help="Sohbet geçmişini temizler"):
+    if st.button("🔄 Yeni Sohbet", use_container_width=True):
         st.session_state.clear()
         st.session_state.messages = [{"role": "assistant", "content": "Merhaba! Programlama ile ilgili nasıl yardımcı olabilirim? 😊"}]
         st.rerun()
@@ -84,8 +92,7 @@ with col2:
             "📥 Sohbeti İndir",
             chat_content,
             file_name=f"devhive_sohbet_{datetime.now().strftime('%Y%m%d_%H%M')}.txt",
-            use_container_width=True,
-            help="Sohbet geçmişini txt olarak indir"
+            use_container_width=True
         )
 
 # Kullanıcı Girişi
