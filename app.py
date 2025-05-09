@@ -57,7 +57,7 @@ lang = languages[language]
 with st.sidebar:
     st.markdown('<div class="sidebar-container">', unsafe_allow_html=True)
 
-    col1, col2 = st.columns([0.5, 0.5])  # veya [0.5, 0.5] daha dar istersen
+    col1, col2 = st.columns([0.5])
     with col1:
         if st.button("🇹🇷 Türkçe"):
             st.session_state.language = "Türkçe"
