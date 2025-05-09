@@ -77,6 +77,7 @@ with st.sidebar:
         📸 <a href="https://www.instagram.com/benmericig/" target="_blank">Instagram</a><br>
         ▶️ <a href="https://www.youtube.com/benmericyt" target="_blank">YouTube</a><br>
         😺 <a href="https://github.com/benmeric" target="_blank">GitHub</a><br>
+        <div class="sidebar-footer">
         👤 <strong>{lang['developer']}:</strong> Meriç Yüzaklı<br>
         📧 benmericinfo@gmail.com<br>
         🔄 {lang['version']}: 1.0.0
