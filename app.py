@@ -29,7 +29,7 @@ languages = {
         "initial_message": "Merhaba! Programlama ile ilgili nasıl yardımcı olabilirim? 😊",
         "generating": "🤖 Cevap oluşturuluyor...",
         "version": "Versiyon",
-        "developer": "👤 Geliştirici"
+        "developer": "Geliştirici"
     },
     "English": {
         "title": "DevHive",
@@ -43,7 +43,7 @@ languages = {
         "initial_message": "Hi there! How can I assist you with programming? 😊",
         "generating": "🤖 Generating response...",
         "version": "Version",
-        "developer": "👤 Developer"
+        "developer": "Developer"
     }
 }
 
@@ -74,7 +74,7 @@ with st.sidebar:
 
     st.markdown(f"""
     <div class="sidebar-footer">
-        <strong>{lang['👤developer']}:</strong> Meriç Yüzaklı<br>
+       👤 <strong>{lang['developer']}:</strong> Meriç Yüzaklı<br>
         📸 <a href="https://www.instagram.com/benmericig/" target="_blank">Instagram</a><br>
         ▶️ <a href="https://www.youtube.com/benmericyt" target="_blank">YouTube</a><br>
         😺 <a href="https://github.com/benmeric" target="_blank">GitHub</a><br>
