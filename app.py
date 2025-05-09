@@ -203,11 +203,13 @@ if prompt := st.chat_input("Mesajınızı yazın..."):
     Human: {prompt}
     Chatbot:"""
     
+from google.generativeai.types import GenerationConfig
+
 with st.chat_message("assistant", avatar="🤖"):
     with st.spinner("🤖 Cevap oluşturuluyor..."):
         response = model.generate_content(
             final_prompt,
-            generation_config=genai.types.GenerationConfig(
+            generation_config=GenerationConfig(
                 max_output_tokens=4096,
                 temperature=0.7
             )
@@ -215,6 +217,7 @@ with st.chat_message("assistant", avatar="🤖"):
         st.markdown(response.text, unsafe_allow_html=True)
 
 st.session_state.messages.append({"role": "assistant", "content": response.text})
+
 
 
 # Footer
