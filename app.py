@@ -47,12 +47,26 @@ languages = {
     }
 }
 
+# Varsayılan dil ayarı
+if "language" not in st.session_state:
+    st.session_state.language = "Türkçe"
+language = st.session_state.language
+lang = languages[language]
+
 # Sidebar
 with st.sidebar:
-    language = st.selectbox("🌐 Dil / Language", options=list(languages.keys()))
-    lang = languages[language]
-
     st.markdown('<div class="sidebar-container">', unsafe_allow_html=True)
+
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("🇹🇷 Türkçe"):
+            st.session_state.language = "Türkçe"
+            st.rerun()
+    with col2:
+        if st.button("🇺🇸 English"):
+            st.session_state.language = "English"
+            st.rerun()
+
     st.header(" </> ")
     st.markdown(f"### {lang['guide_header']}")
     st.markdown(lang['guide_text'])
@@ -112,6 +126,7 @@ col1, col2 = st.columns(2)
 with col1:
     if st.button(lang["new_chat"], use_container_width=True):
         st.session_state.clear()
+        st.session_state.language = language  # Dil değişmesin diye tekrar ayarla
         st.session_state.messages = [{"role": "assistant", "content": lang["initial_message"]}]
         st.rerun()
 
@@ -133,9 +148,8 @@ if prompt := st.chat_input(lang["input_placeholder"]):
     with st.chat_message("user", avatar="👤"):
         st.markdown(prompt, unsafe_allow_html=True)
 
-    # Prompt Hazırlama
     previous_chat = "\n".join([f"{m['role']}: {m['content']}" for m in st.session_state.messages])
-    
+
     if language == "English":
         final_prompt = f"""You are a programming teaching assistant named DevHive (Developer Hive), created by Meriç Yüzaklı.
 Only answer programming and code-related questions.
@@ -151,7 +165,6 @@ Sadece programlama ve kodlama ile ilgili sorulara cevap ver.
 İnsan: {prompt}
 Asistan:"""
 
-    # Gemini Cevabı
     with st.chat_message("assistant", avatar="🤖"):
         with st.spinner(lang["generating"]):
             response = model.generate_content(
